@@ -10,8 +10,10 @@ import os
 
 def get_datapath(fname=''):
     """ Get data path """
-    folder = json.load(open('.env'))['DATA_PATH']
-    return os.path.join(folder, fname)
+    cdir = os.path.dirname(__file__)
+    with open(os.path.join(cdir, '.env')) as handle:
+        ddir = json.load(handle)['DATA_PATH']
+        return os.path.join(ddir, fname)
 
 
 class Dataset():
@@ -43,12 +45,12 @@ def plot_image(X, ax=None):
     """ Plot an image X. """
     if ax is None:
         ax = plt.gca()
-    
+
     if (X.ndim == 2) or (X.shape[-1] == 1):
         ax.imshow(X.astype('uint8'), origin='upper', cmap=plt.cm.Greys)
     else:
         ax.imshow(X.astype('uint8'), origin='upper')
-    
+
     ax.set(xticks=[], yticks=[])
 
 
@@ -66,7 +68,7 @@ def plot_examples(data, num_examples=5):
 
 def plot_prediction(X, y, yp, classes, top_n=False):
     """ Plot image along with all or the top_n predictions.
-    
+
     Args:
         X (array): image
         y (integer): true class label
@@ -87,7 +89,7 @@ def plot_prediction(X, y, yp, classes, top_n=False):
 
     patches = ax2.barh(np.arange(n), yp[s], align='center')
     ax2.set(xlim=(0,1), xlabel='Score', yticks=[])
-    
+
     for iy, patch in zip(s, patches):
         if iy == y:
             patch.set_facecolor('C1')  # color correct patch

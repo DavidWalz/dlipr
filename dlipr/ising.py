@@ -21,8 +21,8 @@ def load_data():
 
     for i in range(5):
         X, y = load_pickle(fname % i)
-            X_train[i*10000 : (i+1)*10000] = X
-            y_train[i*10000 : (i+1)*10000] = y
+        X_train[i*10000 : (i+1)*10000] = X
+        y_train[i*10000 : (i+1)*10000] = y
 
     X_test, y_test = load_pickle(fname % 5)
 
