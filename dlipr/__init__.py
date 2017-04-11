@@ -3,12 +3,10 @@ __all__ = [
     "cifar",
     "mnist",
     "svhn",
-    "ising"
-    ]
+    "ising"]
 
 import dlipr.utils
 import dlipr.cifar
 import dlipr.mnist
 import dlipr.svhn
 import dlipr.ising
-

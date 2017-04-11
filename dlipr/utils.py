@@ -9,7 +9,11 @@ import os
 
 
 def get_datapath(fname=''):
-    """ Get data path """
+    """Get data path.
+
+    Args:
+        fname (str, optional): data filename
+    """
     cdir = os.path.dirname(__file__)
     with open(os.path.join(cdir, '.env')) as handle:
         ddir = json.load(handle)['DATA_PATH']
@@ -17,18 +21,38 @@ def get_datapath(fname=''):
 
 
 class Dataset():
-    """ Simple dataset container """
+    """Simple dataset container
+    """
+
     def __init__(self, **kwds):
+        """Summary
+
+        Args:
+            **kwds:
+        """
         self.__dict__.update(kwds)
 
-    def plot_examples(self, num_examples):
-        plot(self, num_examples)
+    def plot_examples(self, num_examples=5):
+        """Plot examples from the dataset
+
+        Args:
+            num_examples (int, optional): number of examples to
+        """
+        plot_examples(self, num_examples)
 
 
 def to_onehot(y, num_classes=None):
-    """ Convert integer class labels to one hot encodings, e.g. 2 --> (0,0,1...) """
+    """Convert integer class labels to one-hot encodings, e.g. 2 --> (0,0,1...)
+
+    Args:
+        y (array): class labels
+        num_classes (None, optional): number of classes
+
+    Returns:
+        2D array: one-hot encodings / class vectors
+    """
     y = np.array(y, dtype='int').ravel()
-    if not num_classes:
+    if num_classes is None:
         num_classes = np.max(y) + 1
     n = y.shape[0]
     onehot = np.zeros((n, num_classes))
@@ -37,12 +61,24 @@ def to_onehot(y, num_classes=None):
 
 
 def to_label(y):
-    """ Converts one hot encodings to integer class labels, e.g. (0,0,1...) --> 2 """
+    """Converts class vectors to integer class labels, e.g. (0,0,1...) --> 2
+
+    Args:
+        y (array): 2D array class vectors
+
+    Returns:
+        array: integer class labels
+    """
     return np.argmax(y, axis=-1)
 
 
 def plot_image(X, ax=None):
-    """ Plot an image X. """
+    """Plot an image X.
+
+    Args:
+        X (array): image, grayscale or RGB
+        ax (None, optional): Description
+    """
     if ax is None:
         ax = plt.gca()
 
@@ -55,19 +91,23 @@ def plot_image(X, ax=None):
 
 
 def plot_examples(data, num_examples=5):
-    """ Plot first examples for each class in given Dataset. """
+    """Plot first examples for each class in given Dataset.
+
+    Args:
+        data (Dataset): a dataset
+        num_examples (int, optional): number of examples to plot for each class
+    """
     num_classes = len(data.classes)
     fig, axes = plt.subplots(num_examples, num_classes, figsize=(num_classes, num_examples))
     for l in range(num_classes):
         axes[0, l].set_title(data.classes[l], fontsize='smaller')
         images = data.train_images[data.train_labels == l]
         for i in range(num_examples):
-            plot_image(images[i], axes[i,l])
-    return fig
+            plot_image(images[i], axes[i, l])
 
 
 def plot_prediction(X, y, yp, classes, top_n=False):
-    """ Plot image along with all or the top_n predictions.
+    """Plot image along with all or the top_n predictions.
 
     Args:
         X (array): image
@@ -88,7 +128,7 @@ def plot_prediction(X, y, yp, classes, top_n=False):
         s = np.arange(n)[::-1]
 
     patches = ax2.barh(np.arange(n), yp[s], align='center')
-    ax2.set(xlim=(0,1), xlabel='Score', yticks=[])
+    ax2.set(xlim=(0, 1), xlabel='Score', yticks=[])
 
     for iy, patch in zip(s, patches):
         if iy == y:
@@ -96,8 +136,6 @@ def plot_prediction(X, y, yp, classes, top_n=False):
 
     for i in range(n):
         ax2.text(0.05, i, classes[s][i], ha='left', va='center')
-
-    return fig
 
 
 # def plot_confusion(y1_true, y1_predict):
