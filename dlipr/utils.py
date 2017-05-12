@@ -109,7 +109,6 @@ def plot_examples(data, num_examples=5, fname=None):
             plot_image(images[i], axes[i, l])
 
     maybe_savefig(fig, fname)
-    return fig
 
 
 def plot_prediction(Yp, X, y, classes=None, top_n=False, fname=None):
@@ -147,7 +146,6 @@ def plot_prediction(Yp, X, y, classes=None, top_n=False, fname=None):
         ax2.text(0.05, i, classes[s][i], ha='left', va='center')
 
     maybe_savefig(fig, fname)
-    return fig
 
 
 def plot_confusion(yp, y, classes, fname=None):
@@ -162,24 +160,25 @@ def plot_confusion(yp, y, classes, fname=None):
     n = len(classes)
     bins = np.linspace(-0.5, n - 0.5, n + 1)
     C = np.histogram2d(y, yp, bins=bins)[0]
-    C /= np.sum(C, axis=1)
+    C = C / np.sum(C, axis=1) * 100
 
     fig = plt.figure(figsize=(8, 8))
-    plt.imshow(C, interpolation='nearest', vmin=0, vmax=1, cmap=plt.cm.YlGnBu)
-    plt.colorbar()
+    plt.imshow(C, interpolation='nearest', vmin=0, vmax=100, cmap=plt.cm.YlGnBu)
+    cbar = plt.colorbar(shrink=0.8)
+    cbar.set_label('Frequency %')
     plt.xlabel('Prediction')
     plt.ylabel('Truth')
     plt.xticks(range(n), classes, rotation='vertical')
     plt.yticks(range(n), classes)
     for x in range(n):
         for y in range(n):
-            plt.annotate('%.1f' % (C[x, y] * 100), xy=(y, x), ha='center', va='center')
+            plt.annotate('%.1f' % (C[x, y]), xy=(y, x), ha='center', va='center')
 
     maybe_savefig(fig, fname)
-    return fig
 
 
 def maybe_savefig(fig, fname):
     """Save figure if filename is given."""
     if fname is not None:
         fig.savefig(fname, bbox_inches='tight')
+        fig.close()
