@@ -172,7 +172,8 @@ def plot_confusion(yp, y, classes, fname=None):
     plt.yticks(range(n), classes)
     for x in range(n):
         for y in range(n):
-            plt.annotate('%.1f' % (C[x, y]), xy=(y, x), ha='center', va='center')
+            color = 'white' if x == y else 'black'
+            plt.annotate('%.1f' % (C[x, y]), xy=(y, x), color=color, ha='center', va='center')
 
     maybe_savefig(fig, fname)
 
@@ -181,4 +182,4 @@ def maybe_savefig(fig, fname):
     """Save figure if filename is given."""
     if fname is not None:
         fig.savefig(fname, bbox_inches='tight')
-        fig.close()
+        plt.close()
