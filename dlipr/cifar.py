@@ -45,7 +45,7 @@ try:
     # python 2
     import cPickle as pickle
     _pickle_kwargs = {}
-except ModuleNotFoundError:
+except ImportError:
     # python 3
     import pickle
     _pickle_kwargs = {'encoding': 'latin1'}
