@@ -141,7 +141,7 @@ def plot_prediction(Yp, X, y, classes=None, top_n=False, fname=None):
             patch.set_facecolor('C1')  # color correct patch
 
     if classes is None:
-        classes = np.arange(0, Yp.shape[1])
+        classes = np.arange(0, Yp.size)
     for i in range(n):
         ax2.text(0.05, i, classes[s][i], ha='left', va='center')
 
