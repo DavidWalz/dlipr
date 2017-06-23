@@ -3,10 +3,14 @@ __all__ = [
     "cifar",
     "mnist",
     "svhn",
-    "ising"]
+    "ising",
+    "flower",
+    "speckles"]
 
 import dlipr.utils
 import dlipr.cifar
 import dlipr.mnist
 import dlipr.svhn
 import dlipr.ising
+import dlipr.flower
+import dlipr.speckles
